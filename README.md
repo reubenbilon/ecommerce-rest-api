@@ -127,9 +127,40 @@ Base URL: `http://localhost:5000/api`
 
 ## Postman Testing
 
+## API Documentation & Testing
+
 The Postman collection is available in the `postman/` directory.
 
-Import the collection into Postman and configure the required authentication tokens before testing protected endpoints.
+### Import the Collection
+
+1. Clone or download this repository.
+2. Open Postman.
+3. Click Import.
+4. Select the file:
+
+   `postman/E-commerce REST API.postman_collection.json`
+
+5. Run the Login requests to generate authentication tokens.
+6. Use the collection to test the API endpoints.
+
+### Authentication
+
+The collection uses JWT authentication with three collection variables:
+
+- `customerToken`
+- `adminToken`
+- `customer2Token`
+
+Login requests automatically save the generated tokens.
+
+### Tested Modules
+
+- Authentication and User Management
+- Category Management
+- Product Management
+- Order Management
+- Role-based Authorization
+- Product Stock Management
 
 ## Security
 
