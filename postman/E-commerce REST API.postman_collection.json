@@ -1,0 +1,1125 @@
+{
+  "info": {
+    "_postman_id": "03afcfe0-bc3c-450b-a3bd-7e18abd4e19d",
+    "name": "E-commerce REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57008436",
+    "_collection_link": "https://go.postman.co/collection/57008436-03afcfe0-bc3c-450b-a3bd-7e18abd4e19d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Customer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Test Customer\",\r\n  \"email\": \"customer@gmail.com\",\r\n  \"password\": \"Customer123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "StartFragment\n\nRegisters a new customer account.\n\n**Endpoint:** POST `/api/auth/register`\n\n**Request body:**\n\n- `name` — Customer name\n    \n- `email` — Valid, unique email address\n    \n- `password` — Account password\n    \n\n**Expected response:** `201 Created`\n\nReturns a success message, customer details, and an authentication token.\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\n\r\npm.collectionVariables.set(\"customerToken\", response.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"customer@gmail.com\",\r\n  \"password\": \"Customer123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "StartFragment\n\n**Deactivated Customer Login Test**\n\nVerifies that deactivated accounts cannot authenticate.\n\n- Method: POST\n    \n- Endpoint: `/api/auth/login`\n    \n- Authentication: Not required\n    \n\n**Request body:**\n\n```\n{\n  \"email\": \"customer@gmail.com\",\n  \"password\": \"Customer123\"\n}\n\n ```\n\n**Expected response:** `403 Forbidden`\n\n```\n{\n  \"success\": false,\n  \"message\": \"Your account has been deactivated\"\n}\n\n ```\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\n\r\npm.collectionVariables.set(\"adminToken\", response.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Second Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\n\r\npm.collectionVariables.set(\"customer2Token\", response.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"customer2@gmail.com\",\r\n  \"password\": \"Customer2@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Customer Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/users/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "users",
+                "profile"
+              ]
+            },
+            "description": "StartFragment\n\n**Get Customer Profile**\n\nRetrieves the currently authenticated user's profile.\n\n- **Method:** GET\n    \n- **Endpoint:** `/api/users/profile`\n    \n- **Authentication:** Required (Bearer JWT)\n    \n- **Role:** Admin and Customer\n    \n\n**Headers:**\n\n- Authorization: `Bearer {{customerToken}}`\n    \n\n**Expected response:** `200 OK`\n\nReturns the user's ID, name, email, role, and account activation status.\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users - Customer Access Test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "StartFragment\n\n**Get All Users — Customer Access Test**\n\nTests whether a customer can access the admin-only user listing endpoint.\n\n- **Method:** GET\n    \n- **Endpoint:** `/api/users`\n    \n- **Authentication:** Required (Bearer JWT)\n    \n- **Required role:** Admin\n    \n\n**Expected response:** `403 Forbidden`\n\n```\n{\n  \"success\": false,\n  \"message\": \"You do not have permission to perform this action\"\n}\n\n ```\n\nThis confirms that customers cannot access admin-only functionality.\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users - Admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "StartFragment\n\n**Get All Users (Admin)**\n\nRetrieves all registered users.\n\n- Method: GET\n    \n- Endpoint: `/api/users`\n    \n- Authentication: Bearer JWT\n    \n- Required role: Admin\n    \n\n**Expected response:** `200 OK`\n\nReturns user IDs, names, email addresses, roles, account status, and timestamps.\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Deactivate Customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "StartFragment\n\n**Deactivate Customer (Admin)**\n\nDeactivates a customer account.\n\n- Method: PATCH\n    \n- Endpoint: `/api/users/:id/status`\n    \n- Authentication: Bearer JWT\n    \n- Required role: Admin\n    \n\n**Request body:**\n\n```\n{\n  \"isActive\": false\n}\n\n ```\n\n**Expected response:** `200 OK`\n\nThe deactivated user cannot access protected endpoints.\n\nEndFragment"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Root Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Electronics\",\r\n  \"description\": \"Electronic devices and accessories\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "**Create Root Category**\n\nCreates a top-level product category.\n\n- Method: POST\n    \n- Endpoint: `/api/categories`\n    \n- Authentication: Bearer JWT\n    \n- Required role: Admin\n    \n\n**Request body:**\n\n```\n{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic devices and accessories\"\n}\n\n ```\n\n**Expected response:** `201 Created`\n\nCreates a category with `parent: null`."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Child Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Mobiles\",\r\n  \"description\": \"Mobile phones\",\r\n  \"parent\": \"6ae46d6fbe6438d792ecfece\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "**Create Child Category**\n\nCreates a nested category under an existing parent category.\n\n- Method: POST\n    \n- Endpoint: `/api/categories`\n    \n- Authentication: Bearer JWT\n    \n- Required role: Admin\n    \n\n**Request body:**\n\n```\n{\n  \"name\": \"Mobiles\",\n  \"description\": \"Mobile phones\",\n  \"parent\": \"PARENT_CATEGORY_ID\"\n}\n\n ```\n\n**Expected response:** `201 Created`\n\nThe parent field references the existing parent category's MongoDB ObjectId."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "Get All Categories\n\nRetrieves all available product categories, including their parent category information.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/categories`\n    \n- Authentication: Not required\n    \n- Request Body: None\n    \n\n**Expected Status:** `200 OK`\n\n**Sample Response:**\n\n```\n{\n  \"success\": true,\n  \"results\": 2,\n  \"data\": {\n    \"categories\": [\n      {\n        \"_id\": \"6ae46d6fbe6438d792ecfece\",\n        \"name\": \"Electronics\",\n        \"slug\": \"electronics\",\n        \"description\": \"Electronic devices and accessories\",\n        \"parent\": null,\n        \"isActive\": true\n      },\n      {\n        \"_id\": \"6ae46db4be6438d792ecfecf\",\n        \"name\": \"Mobiles\",\n        \"slug\": \"mobiles\",\n        \"description\": \"Mobile phones\",\n        \"parent\": {\n          \"_id\": \"6ae46d6fbe6438d792ecfece\",\n          \"name\": \"Electronics\",\n          \"slug\": \"electronics\"\n        },\n        \"isActive\": true\n      }\n    ]\n  }\n}\n\n ```\n\n**Response Explanation:**\n\n- `results`: Number of categories returned.\n    \n- `_id`: Unique MongoDB category ID.\n    \n- `name`: Category name.\n    \n- `slug`: URL-friendly category name.\n    \n- `description`: Category description.\n    \n- `parent`: Parent category reference; `null` for root categories.\n    \n- `isActive`: Indicates whether the category is active.\n    \n\n**Test Result:** Successfully retrieved two categories with the correct parent-child relationship."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category Tree",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/categories/tree",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories",
+                "tree"
+              ]
+            },
+            "description": "### Get Category Tree\n\nRetrieves all product categories in a hierarchical tree structure, including nested child categories.\n\n**Request Details**\n\n- **Method:** GET\n    \n- **Endpoint:** `/api/categories/tree`\n    \n- **Authentication:** Not required\n    \n- **Request Body:** None\n    \n\n**Expected Status:** `200 OK`\n\n**Sample Response:**\n\n```\n{\n  \"success\": true,\n  \"results\": 1,\n  \"data\": {\n    \"categories\": [\n      {\n        \"_id\": \"6ae46d6fbe6438d792ecfece\",\n        \"name\": \"Electronics\",\n        \"parent\": null,\n        \"children\": [\n          {\n            \"_id\": \"6ae46db4be6438d792ecfecf\",\n            \"name\": \"Mobiles\",\n            \"parent\": \"6ae46d6fbe6438d792ecfece\",\n            \"children\": []\n          }\n        ]\n      }\n    ]\n  }\n}\n\n ```\n\n**Response Explanation**\n\n- `results`: Number of root categories.\n    \n- `parent`: Parent category ID; `null` for root categories.\n    \n- `children`: Array containing nested child categories.\n    \n- Nested categories can contain their own children, supporting multiple levels of hierarchy.\n    \n\n**Test Result:** Successfully retrieved Electronics with Mobiles nested underneath it."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"description\": \"Updated electronics and electronic accessories\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/categories/6ae46d6fbe6438d792ecfece",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories",
+                "6ae46d6fbe6438d792ecfece"
+              ]
+            },
+            "description": "StartFragment\n\n## Update Category\n\nUpdates an existing product category.\n\n**Request Details**\n\n- Method: PATCH\n    \n- Endpoint: `/api/categories/:id`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n\n**Request Body:**\n\n```\n{\n  \"description\": \"Updated electronics and electronic accessories\"\n}\n\n ```\n\n**Expected Status:** `200 OK`\n\n**Description:** Updates category information using its MongoDB ObjectId. Only the supplied fields are updated.\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category - Parent With Children",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "Delete Category — Parent With Children\n\nTests whether a category containing child categories can be deleted.\n\n**Request Details**\n\n- Method: DELETE\n    \n- Endpoint: `/api/categories/:id`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n\n**Request Body:** None\n\n**Expected Status:** `400 Bad Request`\n\n**Description:** The API prevents deletion of a parent category when child categories exist, preserving the category hierarchy."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Child Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/categories/6ae46db4be6438d792ecfecf",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories",
+                "6ae46db4be6438d792ecfecf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Root Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/categories/6ae46d6fbe6438d792ecfece",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories",
+                "6ae46d6fbe6438d792ecfece"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Electronics\",\r\n  \"description\": \"Electronic products\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/categories",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "Create Product\n\nCreates a new product and associates it with an existing category.\n\n**Request Details**\n\n- **Method:** POST\n    \n- **Endpoint:** `/api/products`\n    \n- **Authentication:** Bearer JWT\n    \n- **Required Role:** Admin\n    \n\n**Request Body:**\n\n```\n{\n  \"name\": \"Samsung Galaxy S24\",\n  \"sku\": \"SAMSUNG-S24-001\",\n  \"description\": \"Samsung Galaxy S24 smartphone\",\n  \"price\": 75000,\n  \"salePrice\": 70000,\n  \"stock\": 20,\n  \"category\": \"CATEGORY_ID\",\n  \"status\": \"active\"\n}\n\n ```\n\n**Expected Status:** `201 Created`\n\n**Field Explanation:**\n\n- `name`: Product name.\n    \n- `sku`: Unique product identifier.\n    \n- `description`: Product details.\n    \n- `price`: Original product price.\n    \n- `salePrice`: Discounted price.\n    \n- `stock`: Available quantity.\n    \n- `category`: Existing category MongoDB ObjectId.\n    \n- `status`: Product availability (`active` or `inactive`).\n    \n\n**Test Result:** Product creation request configured with product details and category association."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Samsung Galaxy S24\",\r\n  \"sku\": \"SAMSUNG-S24-001\",\r\n  \"description\": \"Samsung Galaxy S24 smartphone\",\r\n  \"price\": 75000,\r\n  \"salePrice\": 70000,\r\n  \"stock\": 20,\r\n  \"category\": \"6ae470c9431cb2820beb0fb9\",\r\n  \"status\": \"active\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "description": "StartFragment\n\n## Create Product\n\nCreates a new product and associates it with an existing category.\n\n**Request Details**\n\n- Method: POST\n    \n- Endpoint: `/api/products`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n\n**Request Body:**\n\n```\n{\n  \"name\": \"Samsung Galaxy S24\",\n  \"sku\": \"SAMSUNG-S24-001\",\n  \"description\": \"Samsung Galaxy S24 smartphone\",\n  \"price\": 75000,\n  \"salePrice\": 70000,\n  \"stock\": 20,\n  \"category\": \"CATEGORY_ID\",\n  \"status\": \"active\"\n}\n\n ```\n\n**Expected Status:** `201 Created`\n\n**Test Result:** Successfully created Samsung Galaxy S24 with SKU `SAMSUNG-S24-001` and 20 units in stock.\n\nEndFragment"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Products",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "description": "Get All Products\n\nRetrieves the available products with pagination, product details, and category information.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products`\n    \n- Authentication: Not required\n    \n- Request Body: None\n    \n\n**Query Parameters:**\n\n- `page`: Page number (default: 1).\n    \n- `limit`: Number of products per page (default: 10).\n    \n- `search`: Search products by name or description.\n    \n- `category`: Filter by category ID.\n    \n- `minPrice`: Minimum product price.\n    \n- `maxPrice`: Maximum product price.\n    \n- `sort`: Sort by price, name, createdAt, or stock.\n    \n- `order`: Sort direction (`asc` or `desc`).\n    \n\n**Expected Status:** `200 OK`\n\n**Test Result:** Successfully retrieved Samsung Galaxy S24 with category information and pagination metadata."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products/6ae4719c431cb2820beb0fba",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "6ae4719c431cb2820beb0fba"
+              ]
+            },
+            "description": "Get Single Product\n\nRetrieves detailed information about a specific product using its MongoDB ObjectId.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products/:id`\n    \n- Authentication: Not required\n    \n- Request Body: None\n    \n\n**Path Parameters:**\n\n- `id`: Unique MongoDB ObjectId of the product.\n    \n\n**Expected Status:** `200 OK`\n\n**Test Result:** Successfully retrieved Samsung Galaxy S24, including its SKU, price, stock, status, and associated category information."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products?search=Samsung",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Samsung"
+                }
+              ]
+            },
+            "description": "Search Products\n\nSearches products by name or description using a search query.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products?search=Samsung`\n    \n- Authentication: Not required\n    \n- Request Body: None\n    \n\n**Query Parameters:**\n\n- `search`: Search term used to find matching product names or descriptions.\n    \n\n**Expected Status:** `200 OK`\n\n**Test Result:** Successfully found Samsung Galaxy S24 using the search parameter."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Products By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products?category=6ae470c9431cb2820beb0fb9",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "6ae470c9431cb2820beb0fb9"
+                }
+              ]
+            },
+            "description": "Filter Products By Category\n\nRetrieves products belonging to a specified category. Filtering by a parent category should also include products in its descendant categories.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products?category=CATEGORY_ID`\n    \n- Authentication: Not required\n    \n- Request Body: None\n    \n\n**Query Parameters:**\n\n- `category`: MongoDB ObjectId of the category.\n    \n\n**Expected Status:** `200 OK`\n\n**Test Result:** Successfully retrieved Samsung Galaxy S24 under the Electronics category."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Products By Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products?minPrice=60000&maxPrice=80000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "60000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "80000"
+                }
+              ]
+            },
+            "description": "Filter Products By Price\n\nRetrieves products within a specified minimum and maximum price range.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products?minPrice=60000&maxPrice=80000`\n    \n- Authentication: Not required\n    \n- Request Body: None\n    \n\n**Query Parameters:**\n\n- `minPrice`: Minimum product price.\n    \n- `maxPrice`: Maximum product price.\n    \n\n**Expected Status:** `200 OK`\n\n**Test Result:** Successfully retrieved Samsung Galaxy S24 priced at ₹75,000 within the specified range."
+          },
+          "response": []
+        },
+        {
+          "name": "Sort Products By Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products?sort=price&order=desc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test Invalid Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products?page=abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "abc"
+                }
+              ]
+            },
+            "description": "Test Invalid Pagination\n\nVerifies that the API rejects invalid pagination parameters.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products?page=abc`\n    \n- Authentication: Not required\n    \n\n**Expected Status:** `400 Bad Request`\n\n**Actual Response:**\n\n```\n{\n  \"success\": false,\n  \"message\": \"Page must be a positive integer and limit must be between 1 and 100\"\n}\n\n ```\n\n**Test Result:** Successfully rejected an invalid page parameter."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"price\": 72000,\r\n  \"stock\": 25\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/products/6ae4719c431cb2820beb0fba",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "6ae4719c431cb2820beb0fba"
+              ]
+            },
+            "description": "Update Product\n\nUpdates the details of an existing product.\n\n**Request Details**\n\n- Method: PATCH\n    \n- Endpoint: `/api/products/:id`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n\n**Request Body:**\n\n```\n{\n  \"price\": 72000,\n  \"stock\": 25\n}\n\n ```\n\n**Expected Status:** `200 OK`\n\n**Test Result:** Successfully updated Samsung Galaxy S24 price to ₹72,000 and stock to 25 units."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products/6ae4719c431cb2820beb0fba",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "6ae4719c431cb2820beb0fba"
+              ]
+            },
+            "description": "Delete Product\n\nDeletes an existing product using its MongoDB ObjectId.\n\n**Request Details**\n\n- Method: DELETE\n    \n- Endpoint: `/api/products/:id`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n- Request Body: None\n    \n\n**Expected Status:** `200 OK`\n\n**Actual Response:**\n\n```\n{\n  \"success\": true,\n  \"message\": \"Product deleted successfully\"\n}\n\n ```\n\n**Test Result:** Successfully deleted Samsung Galaxy S24."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Samsung Galaxy S24\",\r\n  \"sku\": \"SAMSUNG-S24-001\",\r\n  \"description\": \"Samsung Galaxy S24 smartphone\",\r\n  \"price\": 75000,\r\n  \"salePrice\": 70000,\r\n  \"stock\": 20,\r\n  \"category\": \"6ae470c9431cb2820beb0fb9\",\r\n  \"status\": \"active\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "description": "Create Product for Order Testing\n\nCreates a product that can be used when testing customer order creation and stock management.\n\n**Request Details**\n\n- Method: POST\n    \n- Endpoint: `/api/products`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n\n**Request Body:**\n\n```\n{\n  \"name\": \"Samsung Galaxy S24\",\n  \"sku\": \"SAMSUNG-S24-001\",\n  \"description\": \"Samsung Galaxy S24 smartphone\",\n  \"price\": 75000,\n  \"salePrice\": 70000,\n  \"stock\": 20,\n  \"category\": \"6ae470c9431cb2820beb0fb9\",\n  \"status\": \"active\"\n}\n\n ```\n\n**Expected Status:** `201 Created`\n\n**Test Result:** Successfully created Samsung Galaxy S24 with 20 units in stock for order testing.\n\n**Product ID:** `6ae473e2431cb2820beb0fbb`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "Create Order\n\nAllows an authenticated customer to place an order containing one or more products.\n\n**Request Details**\n\n- Method: POST\n    \n- Endpoint: `/api/orders`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Customer\n    \n\n**Request Body:**\n\n```\n{\n  \"items\": [\n    {\n      \"product\": \"PRODUCT_ID\",\n      \"quantity\": 2\n    }\n  ]\n}\n\n ```\n\n**Expected Status:** `201 Created`\n\n**Business Logic:**\n\n- Validates product availability and stock.\n    \n- Calculates prices and subtotals on the backend.\n    \n- Applies the sale price when available.\n    \n- Calculates the total order amount.\n    \n- Reduces product stock after successful order placement.\n    \n- Assigns the order to the authenticated customer.\n    \n\n**Test Result:** Successfully placed an order for two Samsung Galaxy S24 units at ₹70,000 each, with a total of ₹1,40,000."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Stock After Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products/6ae473e2431cb2820beb0fbb",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "6ae473e2431cb2820beb0fbb"
+              ]
+            },
+            "description": "Verify Stock After Order\n\nVerifies that product stock is automatically reduced after a successful order.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/products/:id`\n    \n- Authentication: Not required\n    \n\n**Expected Status:** `200 OK`\n\n**Test Result:**\n\n- Initial stock: 20 units\n    \n- Ordered quantity: 2 units\n    \n- Remaining stock: 18 units\n    \n\nStock was correctly reduced after order placement."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer Orders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "orders"
+              ]
+            },
+            "description": "Get Customer Orders\n\nRetrieves orders belonging to the currently authenticated customer.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/orders`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Customer\n    \n\n**Request Body:** None\n\n**Expected Status:** `200 OK`\n\n**Response Details:**\n\n- `customer`: Customer information.\n    \n- `items`: Ordered product details and quantities.\n    \n- `totalAmount`: Total order amount.\n    \n- `status`: Current order status.\n    \n- `createdAt`: Order creation timestamp.\n    \n\n**Test Result:** Successfully retrieved the Test Customer's order with a total amount of ₹1,40,000."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Order - Customer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer2Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/orders/6ae47474431cb2820beb0fbc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "orders",
+                "6ae47474431cb2820beb0fbc"
+              ]
+            },
+            "description": "Order Ownership Authorization Test\n\nVerifies that customers cannot access orders belonging to other customers.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/orders/:id`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Customer\n    \n\n**Test Scenario:**\n\n- Test Customer creates an order.\n    \n- Second Customer attempts to retrieve that order.\n    \n- The API denies access.\n    \n\n**Expected Status:** `404 Not Found`\n\n**Actual Response:**\n\n```\n{\n  \"success\": false,\n  \"message\": \"Order not found\"\n}\n\n ```\n\n**Test Result:** Successfully prevented a customer from accessing another customer's order."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Orders - Admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            },
+            "description": "Get All Orders (Admin)\n\nRetrieves all orders placed by registered customers.\n\n**Request Details**\n\n- Method: GET\n    \n- Endpoint: `/api/orders`\n    \n- Authentication: Bearer JWT\n    \n- Required Role: Admin\n    \n\n**Request Body:** None\n\n**Expected Status:** `200 OK`\n\n**Response Details:**\n\n- `customer`: Customer who placed the order.\n    \n- `items`: Ordered products and quantities.\n    \n- `totalAmount`: Total order value.\n    \n- `status`: Current order status.\n    \n- `createdAt`: Order creation timestamp.\n    \n\n**Test Result:** Successfully retrieved the order placed by Test Customer using admin authentication.\n\nE"
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Order - Admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"Confirmed\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/orders/6ae47474431cb2820beb0fbc/status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "orders",
+                "6ae47474431cb2820beb0fbc",
+                "status"
+              ]
+            },
+            "description": "Update Order Status\n\n**Method:** PATCH  \n**URL:** `http://localhost:5000/api/orders/:id/status`  \n**Access:** Admin only\n\n**Authorization:** Bearer Token — `{{adminToken}}`\n\n**Request Body:**\n\n```\n{\n  \"status\": \"Processing\"\n}\n\n ```\n\n**Allowed status progression:**\n\n- Pending → Confirmed\n    \n- Confirmed → Processing\n    \n- Processing → Shipped\n    \n- Shipped → Delivered\n    \n- Eligible orders may also be Cancelled.\n    \n\n**Expected Response:** `200 OK`\n\n**Result:** Successfully tested the order status progression from Pending through Delivered."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancellation Test",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"Cancelled\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/orders/6ae476f5431cb2820beb0fbe/status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "orders",
+                "6ae476f5431cb2820beb0fbe",
+                "status"
+              ]
+            },
+            "description": "Cancel Order\n\n**Method:** PATCH  \n**URL:** `http://localhost:5000/api/orders/:id/status`  \n**Access:** Admin only\n\n**Authorization:** Bearer Token — `{{adminToken}}`\n\n**Request Body:**\n\n```\n{\n  \"status\": \"Cancelled\"\n}\n\n ```\n\n**Expected Response:** `200 OK`\n\n**Result:** Successfully cancelled a Pending order using Admin authorization."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "customerToken",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "customer2Token",
+      "value": ""
+    }
+  ]
+}
